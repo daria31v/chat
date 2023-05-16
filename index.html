@@ -25,6 +25,10 @@
         messageElement.appendChild(line);
       }
 
+      socket.onopen = function () {
+        writeLine("Connected to chat server :) ");
+      };
+
       socket.onmessage = function ({ data }) {
         writeLine(data);
       };
@@ -38,7 +42,6 @@
           return;
         }
         socket.send(JSON.stringify({ name, message }));
-        writeLine(`You ${message}`);
         chatElement.reset();
       });
 

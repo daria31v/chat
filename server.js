@@ -21,7 +21,9 @@ wss.on("connection", (socket) => {
     const data = JSON.parse(message.toString());
     console.log(data)
     for (const client of clients){
-      if(client !== socket){
+      if (client === socket){
+        client.send(`You: ${data.message}. ${dayjs().format("HH:mm:ss DD/MM/YYYY")}`);
+      } else {
         client.send(`${data.name}: ${data.message}. ${dayjs().format("HH:mm:ss DD/MM/YYYY")}`);
     }
   }
