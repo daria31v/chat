@@ -1,6 +1,8 @@
 const http = require("http");
 const {Server} = require("socket.io");
 const dayjs = require("dayjs");
+
+
 const server = http.createServer();
 const io = new Server(server, {
   cors:{
@@ -14,7 +16,8 @@ io.on("connection", (socket) => {
   );
 
   socket.on("chatMessage", (message) => {
-  const data = JSON.parse(message.toString());
+  const data = JSON.parse(message);
+
   socket.emit("chatMessage", `You: ${data.message}. ${dayjs().format("HH:mm:ss DD/MM/YYYY")}`
   );
     socket.broadcast.emit("chatMessage", `${data.name}: ${data.message}. ${dayjs().format("HH:mm:ss DD/MM/YYYY")}`);
@@ -22,8 +25,8 @@ io.on("connection", (socket) => {
 );
 });
 
-server.listen(9090, () => {
-  console.log("Server 9090");
+server.listen(8080, () => {
+  console.log("Server 8080");
 })
 
 
