@@ -12,7 +12,7 @@
       <div><input type="text" name="message" placeholder="message" /></div>
       <button type="submit">Send</button>
     </form>
-    <div id="" messages></div>
+    <div id="messages"></div>
 
 
 
@@ -43,7 +43,7 @@
         if (username.trim().length === 0 || massage.trim().length === 0) {
           return;
         }
-        socket.emit("chatMessage", JSON.stringify({ username, message });
+        socket.emit("chatMessage", JSON.stringify({ username, message }));
         writeLine(`You ${message} ${new Date()}`);
       };
     </script>

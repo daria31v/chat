@@ -1,24 +1,30 @@
 const { WebSocketServer } = require("ws");
+const dayjs = require("dayjs");
+const wss = new WebSocketServer({ port: 9090 });
 
-const wss = new WebSocketServer({ port: 8080 });
+const clients = [];
 
-wss.on("connection", (ws) => {
-  console.log("new client connected");
-  clients.push(ws);
-
+wss.on("connection", (socket) => {
+  
+  clients.push(socket);
+  // console.log("new client connected");
+  
   for (const client of clients) {
-    if (client !== ws) {
+    if (client === socket) {
+      
       client.send("Welcome to chat");
     } else {
-      client.send(`New user connected, ${new Date()}`);
+      client.send(`New user connected, ${dayjs().format("HH:mm:ss DD/MM/YYYY")}`);
     }
   }
-  wss.on("message", (message) => {
+  socket.on("message", (message) => {
     const data = JSON.parse(message.toString());
-    for (client of clients){
-        client.send(`${data.user}, ${data.message} , ${new Date()}`)
+    console.log(data)
+    for (const client of clients){
+      if(client !== socket){
+        client.send(`${data.name}: ${data.message}. ${dayjs().format("HH:mm:ss DD/MM/YYYY")}`);
     }
+  }
   });
 });
-
 console.log("server started");
