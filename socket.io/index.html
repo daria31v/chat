@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width", initial-scale=1.0">
-    <title>Document</title>
+    <title>Chat - socket.io</title>
   </head>
   <body background-color="grey">
     <form id="chat">
@@ -14,38 +14,38 @@
     </form>
     <div id="messages"></div>
 
-
-
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    
     <script>
-      const socket = io("http://localhost:8080");
+      const socket = io("http://localhost:9090");
 
       const chatElement = document.getElementById("chat");
-      const messageElement = document.getElementById("message");
+      const messageElement = document.getElementById("messages");
 
-      function writeLine(line) {
-       
+      function writeLine(text) {
         const line = document.createElement("div");
         line.innerHTML = `<p>${text}</p>`;
         messageElement.appendChild(line);
       }
 
-        socket.onChatMessage = function(message){
-          console.log("message");
-        }
+      socket.on("chatMessage", function (message) {
+        writeLine(message);
+      });
 
-      chatElement.onsubmit = function (event) {
+
+      chatElement.addEventListener("submit", function (event) {
         event.preventDefault();
-      
-        const username = event.target.value;
-        const massage = event.target.message;
-
-        if (username.trim().length === 0 || massage.trim().length === 0) {
+        // get data from form
+        const name = event.target.username.value;
+        const message = event.target.message.value;
+        
+        if (name.trim().length === 0 || message.trim().length === 0) {
           return;
         }
-        socket.emit("chatMessage", JSON.stringify({ username, message }));
-        writeLine(`You ${message} ${new Date()}`);
-      };
+        socket.emit("chatMessage",JSON.stringify({ name, message }));
+
+        chatElement.reset();
+      });
     </script>
   </body>
 </html>

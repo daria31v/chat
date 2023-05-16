@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server.js",
-    "start:dev": "nodemon ./server.js"
+    "start": "node ./server2.js",
+    "start:dev": "nodemon ./server2.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
     "socket.io": "^4.6.1"
   }
 }
